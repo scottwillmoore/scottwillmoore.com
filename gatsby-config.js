@@ -4,5 +4,5 @@ module.exports = {
         description: "",
         author: "",
     },
-    plugins: [],
+    plugins: ["gatsby-plugin-react-helmet"],
 };

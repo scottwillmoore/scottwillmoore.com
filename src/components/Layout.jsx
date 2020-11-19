@@ -7,7 +7,7 @@ import "../styles/index.scss";
 import "./Layout.scss";
 
 export default ({ children }) => (
-    <div className={layoutStyles.layout}>
+    <div className="layout">
         <Header></Header>
         {children}
         <Footer></Footer>

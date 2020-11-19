@@ -14,6 +14,10 @@
         stroke-linecap: round;
     }
 
+    .hitbox {
+        fill: rgba(0, 0, 0, 0);
+    }
+
     @extend %simplified;
 
     &:hover {
@@ -33,7 +37,12 @@
 
 %simplified {
     * {
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.4s ease-in-out;
+    }
+
+    .hitbox {
+        transform: scale(1);
+        transition-delay: 0.3s;
     }
 
     .s3 {
@@ -74,7 +83,12 @@
 
 %expanded {
     * {
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.4s ease-in-out;
+    }
+
+    .hitbox {
+        transform: scaleX(2.333);
+        transition-delay: 0s;
     }
 
     .s3 {

@@ -1,14 +1,15 @@
 import React from "react";
 
-import Meta from "./Meta";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import "../styles/index.scss";
+import "./Layout.scss";
+
 export default ({ children }) => (
-    <>
-        <Meta></Meta>
+    <div className={layoutStyles.layout}>
         <Header></Header>
         {children}
         <Footer></Footer>
-    </>
+    </div>
 );

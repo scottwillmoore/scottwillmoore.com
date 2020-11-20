@@ -8,8 +8,8 @@ import Helmet from "react-helmet";
 export default () => (
     <Helmet>
         <title></title>
-        <meta name="description" content=""/>
-        <meta name="image" content=""/>
+        <meta name="description" content="" />
+        <meta name="image" content="" />
 
         <meta name="og:url" content="" />
         <meta name="og:title" content="" />

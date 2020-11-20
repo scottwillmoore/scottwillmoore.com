@@ -1,90 +1,113 @@
-import React, { useCallback, useState } from "react";
-import { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import useMouseOver from "../utilities/useMouseOver";
+import usePrefersReducedMotion from "../utilities/usePrefersReducedMotion";
 
 import "./Logo.scss";
 
-const HOLD_DURATION = 1 * 1000;
+// TODO: Consider refactor to TypeScript.
+// TODO: Make mouse over work with mobile devices.
 
-const SIMPLIFY_DELAY = 1 * 1000;
-const EXPAND_DELAY = 1 * 1000;
-
-// TODO: Fix logo hitbox.
-// TODO: Fix pointer events on touch devices.
-// TODO: Wait for simplfy animation to finish before expand can be triggered.
-// TODO: Add different logo sizes.
-// TODO: Clean up logo styles with CSS modules.
-
-export const LogoSize = {
-    Small: 0,
-    Large: 1,
-};
+const ANIMATION_DELAY = 0.8 * 1000;
+const HOLD_DELAY = 2 * 1000;
 
 export const LogoMode = {
-    Interact: 0,
-    Simplify: 1,
-    Expand: 2,
+    Interactive: "interactive",
+    Contract: "contract",
+    Expand: "expand",
 };
 
-export default function Logo({
-    size = LogoSize.Large,
-    mode = LogoMode.Interact,
-}) {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [isPointerOver, setIsPointerOver] = useState(false);
+export const LogoSize = {
+    Tiny: "tiny",
+    Small: "small",
+    Large: "large",
+    Huge: "huge",
+};
+
+const State = {
+    Contracted: 0,
+    Expand: 1,
+    Expanded: 2,
+    Contract: 3,
+};
+
+const forTimeout = delay => new Promise(resolve => setTimeout(resolve, delay));
+
+export default function Logo({ mode = LogoMode.Interactive, size = LogoSize.Large }) {
+    const [state, setState] = useState(State.Contracted);
     const [timeoutId, setTimeoutId] = useState(null);
 
+    const ref = useRef();
+    const mouseOver = useMouseOver(ref);
+
+    const prefersReducedMotion = usePrefersReducedMotion();
+
+    const doContract = useCallback(async () => {
+        setState(State.Contract);
+        await forTimeout(ANIMATION_DELAY);
+        setState(State.Contracted);
+    }, []);
+
+    const doExpand = useCallback(async () => {
+        setState(State.Expand);
+        await forTimeout(ANIMATION_DELAY);
+        setState(State.Expanded);
+    }, []);
+
     useEffect(() => {
-        if (isPointerOver) {
-            clearTimeout(timeoutId);
+        if (prefersReducedMotion || mode == LogoMode.Contract) {
+            doContract();
+        } else if (mode === LogoMode.Expand) {
+            doExpand();
         } else {
-            const id = setTimeout(() => setIsExpanded(false), HOLD_DURATION);
-            setTimeoutId(id);
+            if (mouseOver) {
+                clearTimeout(timeoutId);
+                if (state === State.Contracted) {
+                    doExpand();
+                }
+            } else {
+                if (state === State.Expanded) {
+                    const id = setTimeout(async () => {
+                        doContract();
+                    }, HOLD_DELAY);
+                    setTimeoutId(id);
+                }
+            }
         }
-    }, [isPointerOver]);
+    }, [mode, state, mouseOver, prefersReducedMotion, doContract, doExpand]);
 
-    const handlePointerEnter = useCallback(() => {
-        setIsPointerOver(true);
-        setIsExpanded(true);
-    }, []);
-
-    const handlePointerLeave = useCallback(() => {
-        setIsPointerOver(false);
-    }, []);
-
-    let modeClass;
-    if (mode == LogoMode.Interact) {
-        modeClass = isExpanded ? "expanded" : "simplifed";
-    } else if (mode == LogoMode.Simplify) {
-        modeClass = "simplified";
-    } else if (mode == LogoMode.Expand) {
-        modeClass = "expanded";
+    const classNames = ["logo", `logo__${size}`];
+    if (state === State.Expand || state === State.Expanded) {
+        classNames.push("logo__expanded");
     }
 
     return (
-        <svg
-            onPointerEnter={handlePointerEnter}
-            onPointerLeave={handlePointerLeave}
-            className={`logo logo-${modeClass}`}
-            viewBox="0 0 24 16"
-        >
-            <rect
-                className="hitbox"
-                width="24"
-                height="16"
-                fill="transparent"
-            ></rect>
-
-            <circle className="s1" cx="2" cy="14" r="2"></circle>
-            <line className="s2" x1="2" y1="2" x2="7" y2="14"></line>
-            <circle className="s3" cx="2" cy="2" r="2"></circle>
-
-            <line className="w1" x1="7" y1="2" x2="12" y2="14"></line>
-            <line className="w2" x1="12" y1="2" x2="17" y2="14"></line>
-            <circle className="w3" cx="12" cy="2" r="2"></circle>
-
-            <circle className="m1" cx="17" cy="14" r="2"></circle>
-            <line className="m2" x1="12" y1="2" x2="17" y2="14"></line>
-            <line className="m3" x1="17" y1="2" x2="22" y2="14"></line>
+        <svg ref={ref} className={classNames.join(" ")} viewBox="0 0 24 16">
+            <defs>
+                <circle id="dot" cx="0" cy="0" r="2" fill="white" />
+                <line
+                    id="slant"
+                    x1="0"
+                    y1="0"
+                    x2="5"
+                    y2="12"
+                    stroke="white"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                />
+                <mask id="mask">
+                    <use href="#dot" className="s1" x="2" y="14" />
+                    <use href="#slant" className="s2" x="2" y="2" />
+                    <use href="#dot" y="2" className="s3" x="2" />
+                    <use href="#slant" className="w1" x="7" y="2" />
+                    <use href="#slant" className="w2" x="12" y="2" />
+                    <use href="#dot" className="w3" x="12" y="2" />
+                    <use href="#dot" className="m1" x="17" y="14" />
+                    <use href="#slant" className="m2" x="12" y="2" />
+                    <use href="#slant" className="m3" x="17" y="2" />
+                </mask>
+            </defs>
+            <rect className="mask" width="24" height="16" mask="url(#mask)" />
         </svg>
     );
 }

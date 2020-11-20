@@ -1,93 +1,85 @@
 .logo {
+    overflow: visible;
     width: auto;
+
+    * {
+        transition-property: width, transform;
+        transition-duration: 0.4s;
+        transition-timing-function: ease-in-out;
+    }
+
+    @extend %contracted;
+}
+
+.logo__tiny {
+    height: 1rem;
+    margin: 0.5rem 0;
+}
+
+.logo__small {
+    height: 2rem;
+    margin: 1rem 0;
+}
+
+.logo__large {
     height: 4rem;
     margin: 2rem 0;
-    overflow: visible;
-
-    circle {
-        fill: #000;
-    }
-
-    line {
-        stroke: #000;
-        stroke-width: 4;
-        stroke-linecap: round;
-    }
-
-    .hitbox {
-        fill: rgba(0, 0, 0, 0);
-    }
-
-    @extend %simplified;
-
-    &:hover {
-        @extend %expanded;
-    }
 }
 
-.logo.logo-simplified {
-    &:hover {
-        @extend %simplified;
-    }
+.logo__huge {
+    height: 8rem;
+    margin: 4rem 0;
 }
 
-.logo.logo-expanded {
+.logo__expanded {
     @extend %expanded;
 }
 
-%simplified {
-    * {
-        transition: transform 0.4s ease-in-out;
-    }
-
-    .hitbox {
-        transform: scale(1);
+%contracted {
+    .mask {
+        width: 24px;
         transition-delay: 0.3s;
     }
 
     .s3 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0s;
     }
 
     .w1 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.05s;
     }
 
     .w2 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.1s;
     }
 
     .w3 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.15s;
     }
 
     .m1 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.2s;
     }
 
     .m2 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.25s;
     }
 
     .m3 {
-        transform: translateX(0px);
+        transform: none;
         transition-delay: 0.3s;
     }
 }
 
 %expanded {
-    * {
-        transition: transform 0.4s ease-in-out;
-    }
-
-    .hitbox {
-        transform: scaleX(2.333);
+    .mask {
+        width: 56px;
         transition-delay: 0s;
     }
 

@@ -22,7 +22,7 @@ export default function Header() {
 
     useEffect(() => {
         doPresent();
-    }, []);
+    }, [doPresent]);
 
     return (
         <div className="header">

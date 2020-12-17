@@ -10,7 +10,7 @@ const HOLD_DELAY = 2 * 1000;
 const forTimeout = delay => new Promise(resolve => setTimeout(resolve, delay));
 
 export default function Header() {
-    const logoSize = LogoSize.Huge;
+    const logoSize = LogoSize.Large;
     const [logoMode, setLogoMode] = useState(LogoMode.Contract);
 
     const doPresent = useCallback(async () => {

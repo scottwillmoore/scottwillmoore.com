@@ -1,34 +1,33 @@
-const sass = require("sass");
-
 module.exports = {
-    siteMetadata: {
-        title: "",
-        description: "",
-        author: "",
-    },
+    siteMetadata: {},
     plugins: [
-        /*
         {
-            resolve: "gatsby-source-filesystem",
+            resolve: `gatsby-source-filesystem`,
             options: {
-                name: "articles",
-                path: `${__dirname}/src/articles/`,
+                name: `images`,
+                path: `${__dirname}/src/images`,
             },
         },
         {
-            resolve: "gatsby-plugin-page-creator",
+            resolve: `gatsby-source-filesystem`,
             options: {
-                path: `${__dirname}/src/articles/`,
+                name: `articles`,
+                path: `${__dirname}/src/posts`,
             },
         },
-        */
         {
-            resolve: "gatsby-plugin-sass",
+            resolve: `gatsby-plugin-sass`,
             options: {
-                implementation: sass,
+                implementation: require(`sass`),
             },
         },
-        "gatsby-plugin-mdx",
-        "gatsby-plugin-react-helmet",
+        {
+            resolve: `gatsby-plugin-mdx`,
+            options: {
+                gatsbyRemarkPlugins: [],
+            },
+        },
+        `gatsby-plugin-sharp`,
+        `gatsby-transformer-sharp`,
     ],
 };

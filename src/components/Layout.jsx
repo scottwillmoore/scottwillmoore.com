@@ -3,11 +3,12 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import styles from "./Layout.module.scss";
+
 import "../styles/index.scss";
-import "./Layout.scss";
 
 export default ({ children }) => (
-    <div className="layout">
+    <div class={styles.layout}>
         <Header></Header>
         {children}
         <Footer></Footer>

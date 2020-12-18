@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { timeout } from "../utilities/promise";
 import useMouseOver from "../utilities/useMouseOver";
 import usePrefersReducedMotion from "../utilities/usePrefersReducedMotion";
 
@@ -31,8 +32,6 @@ const State = {
     Contract: 3,
 };
 
-const forTimeout = delay => new Promise(resolve => setTimeout(resolve, delay));
-
 export default function Logo({ mode = LogoMode.Interactive, size = LogoSize.Large }) {
     const [state, setState] = useState(State.Contracted);
     const [timeoutId, setTimeoutId] = useState(null);
@@ -44,13 +43,13 @@ export default function Logo({ mode = LogoMode.Interactive, size = LogoSize.Larg
 
     const doContract = useCallback(async () => {
         setState(State.Contract);
-        await forTimeout(ANIMATION_DELAY);
+        await timeout(ANIMATION_DELAY);
         setState(State.Contracted);
     }, []);
 
     const doExpand = useCallback(async () => {
         setState(State.Expand);
-        await forTimeout(ANIMATION_DELAY);
+        await timeout(ANIMATION_DELAY);
         setState(State.Expanded);
     }, []);
 

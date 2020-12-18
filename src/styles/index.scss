@@ -52,23 +52,3 @@
     font-named-instance: "Italic";
     src: url("../fonts/Inter-Italic-Variable.woff2") format("woff2");
 }
-
-*:before,
-*:after,
-* {
-    box-sizing: border-box;
-}
-
-html {
-    font-family: "Inter", sans-serif;
-}
-
-@supports (font-variation-settings: normal) {
-    html {
-        font-family: "Inter var", sans-serif;
-    }
-}
-
-body {
-    margin: 0;
-}

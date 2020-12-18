@@ -1,18 +1,9 @@
 module.exports = {
-    siteMetadata: {},
     plugins: [
         {
-            resolve: `gatsby-source-filesystem`,
+            resolve: `gatsby-plugin-styled-components`,
             options: {
-                name: `images`,
-                path: `${__dirname}/src/images`,
-            },
-        },
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `articles`,
-                path: `${__dirname}/src/posts`,
+                displayName: true,
             },
         },
         {
@@ -21,13 +12,36 @@ module.exports = {
                 implementation: require(`sass`),
             },
         },
+
         {
-            resolve: `gatsby-plugin-mdx`,
+            resolve: `gatsby-source-filesystem`,
             options: {
-                gatsbyRemarkPlugins: [],
+                name: `images`,
+                path: `${__dirname}/src/images`,
             },
         },
         `gatsby-plugin-sharp`,
         `gatsby-transformer-sharp`,
+
+        {
+            resolve: `gatsby-source-filesystem`,
+            options: {
+                name: `articles`,
+                path: `${__dirname}/src/articles`,
+            },
+        },
+        {
+            resolve: `gatsby-plugin-mdx`,
+            options: {
+                gatsbyRemarkPlugins: [
+                    {
+                        resolve: `gatsby-remark-images`,
+                        options: {
+                            maxWidth: 1280,
+                        },
+                    },
+                ],
+            },
+        },
     ],
 };

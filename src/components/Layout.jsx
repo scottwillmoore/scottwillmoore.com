@@ -1,16 +1,30 @@
 import React from "react";
+import styled from "styled-components";
 
+import Metadata from "./Metadata";
+import Stylesheet from "./Stylesheet";
 import Header from "./Header";
 import Footer from "./Footer";
 
-import styles from "./Layout.module.scss";
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 48rem;
+    margin: 0 auto;
+`;
 
-import "../styles/index.scss";
+export default function Layout({ children }) {
+    return (
+        <>
+            <Metadata />
+            <Stylesheet />
 
-export default ({ children }) => (
-    <div class={styles.layout}>
-        <Header></Header>
-        {children}
-        <Footer></Footer>
-    </div>
-);
+            <Container>
+                <Header />
+                {children}
+                <Footer />
+            </Container>
+        </>
+    );
+}
